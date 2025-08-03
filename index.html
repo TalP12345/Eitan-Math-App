@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<title>תרגול לוח הכפל והחילוק</title>
+<style>
+    body { font-family: Arial, sans-serif; text-align: center; direction: rtl; background: #f2f2f2; margin: 0; padding: 0; }
+    h1 { background: #4CAF50; color: white; padding: 15px; margin: 0; }
+    .menu, .quiz, .table { margin-top: 20px; }
+    button { padding: 10px 20px; margin: 10px; font-size: 18px; cursor: pointer; border: none; background: #4CAF50; color: white; border-radius: 5px; }
+    button:hover { background: #45a049; }
+    #question { font-size: 24px; margin: 20px; }
+    input { padding: 10px; font-size: 18px; text-align: center; width: 80px; }
+    #result { font-size: 20px; margin: 15px; }
+    table { margin: 20px auto; border-collapse: collapse; }
+    td, th { border: 1px solid #999; padding: 10px; text-align: center; width: 40px; height: 40px; }
+    td:hover { background: #d9ead3; cursor: pointer; }
+</style>
+</head>
+<body>
+<h1>תרגול לוח הכפל והחילוק</h1>
+<div class="menu">
+    <button onclick="startQuiz('multiply')">תרגול כפל</button>
+    <button onclick="startQuiz('divide')">תרגול חילוק</button>
+    <button onclick="showTable()">טבלת כפל</button>
+</div>
+<div class="quiz" id="quiz" style="display:none;">
+    <div id="question"></div>
+    <input type="number" id="answer" placeholder="תשובה">
+    <button onclick="checkAnswer()">בדוק</button>
+    <div id="result"></div>
+    <div>ניקוד: <span id="score">0</span></div>
+    <button onclick="backToMenu()">חזרה לתפריט</button>
+</div>
+<div class="table" id="tableDiv" style="display:none;">
+    <table id="table"></table>
+    <button onclick="backToMenu()">חזרה לתפריט</button>
+</div>
+<script>
+let num1, num2, mode, score = 0;
+
+function startQuiz(selectedMode){
+    mode = selectedMode;
+    document.querySelector('.menu').style.display = 'none';
+    document.getElementById('quiz').style.display = 'block';
+    newQuestion();
+}
+
+function newQuestion(){
+    if(mode==='multiply'){
+        num1 = Math.floor(Math.random()*10)+1;
+        num2 = Math.floor(Math.random()*10)+1;
+        document.getElementById('question').innerText = `${num1} × ${num2} = ?`;
+    } else {
+        num2 = Math.floor(Math.random()*9)+1;
+        let result = Math.floor(Math.random()*10)+1;
+        num1 = num2 * result;
+        document.getElementById('question').innerText = `${num1} ÷ ${num2} = ?`;
+    }
+    document.getElementById('answer').value = "";
+    document.getElementById('result').innerText = "";
+}
+
+function checkAnswer(){
+    let ans = parseInt(document.getElementById('answer').value);
+    let correct = (mode==='multiply') ? num1*num2 : num1/num2;
+    if(ans===correct){
+        document.getElementById('result').innerText = "✅ נכון!";
+        score++;
+    } else {
+        document.getElementById('result').innerText = `❌ לא נכון. התשובה היא ${correct}`;
+    }
+    document.getElementById('score').innerText = score;
+    setTimeout(newQuestion, 1500);
+}
+
+function showTable(){
+    document.querySelector('.menu').style.display = 'none';
+    document.getElementById('tableDiv').style.display = 'block';
+    let tbl = '<tr><th>×</th>';
+    for(let i=1;i<=10;i++) tbl += `<th>${i}</th>`;
+    tbl += '</tr>';
+    for(let i=1;i<=10;i++){
+        tbl += `<tr><th>${i}</th>`;
+        for(let j=1;j<=10;j++){
+            tbl += `<td>${i*j}</td>`;
+        }
+        tbl += '</tr>';
+    }
+    document.getElementById('table').innerHTML = tbl;
+}
+
+function backToMenu(){
+    document.querySelector('.menu').style.display = 'block';
+    document.getElementById('quiz').style.display = 'none';
+    document.getElementById('tableDiv').style.display = 'none';
+}
+</script>
+</body>
+</html>
