@@ -76,7 +76,6 @@ function checkAnswer(){
         streak++;
     } else {
         document.getElementById('result').innerText = `❌ לא נכון. התשובה היא ${correct}`;
-        score++;
         streak = 0;
     }
     document.getElementById('score').innerText = score;
